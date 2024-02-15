@@ -20,3 +20,6 @@ To get started with the ASAP Historical Temples Project, follow these steps:
 1. **Clone the Repository**:
    ```bash
    git clone https://github.com/yourusername/asap-historical-temples.git
+
+render deployed link : 
+https://godscountry.onrender.com/ping
