@@ -1,16 +1,27 @@
 const express = require('express');
-const app = express();
-const port = 3000;
+const mongoose = require('mongoose');
+require('dotenv').config(); // Load environment variables from .env file
 
-// define the ping route with the response in JSON
-app.get('/ping', (req, res) => {
-  res.json({ messege: 'pong' });
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+// MongoDB Connection
+mongoose.connect(process.env.DB_CONNECTION_STRING, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+}).then(() => {
+  console.log('Connected to MongoDB');
+}).catch(err => {
+  console.error('Error connecting to MongoDB:', err.message);
 });
 
-if (require.main === module) {
-  app.listen(port, () => {
-    console.log(`🚀 server running on PORT: ${port}`);
-  });
-}
+// Home Route
+app.get('/', (req, res) => {
+  const dbStatus = mongoose.connection.readyState === 1 ? 'Connected' : 'Disconnected';
+  res.send(`Database Connection Status: ${dbStatus}`);
+});
 
-module.exports = app;
+// Start Server
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
