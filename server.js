@@ -1,27 +1,15 @@
 const express = require('express');
-const mongoose = require('mongoose');
-require('dotenv').config(); // Load environment variables from .env file
-
 const app = express();
+const routes = require('./routes'); // Import your routes file
+
 const PORT = process.env.PORT || 3000;
 
-// MongoDB Connection
-mongoose.connect(process.env.DB_CONNECTION_STRING, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-}).then(() => {
-  console.log('Connected to MongoDB');
-}).catch(err => {
-  console.error('Error connecting to MongoDB:', err.message);
-});
+// Use the routes
+app.use('/', routes);
 
-// Home Route
-app.get('/', (req, res) => {
-  const dbStatus = mongoose.connection.readyState === 1 ? 'Connected' : 'Disconnected';
-  res.send(`Database Connection Status: ${dbStatus}`);
-});
+// Middleware to handle undefined routes
+app.use((req, res) => res.status(404).send('Not found'));
 
-// Start Server
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+  console.log(`🚀Server is running on port ${PORT}`);
 });
