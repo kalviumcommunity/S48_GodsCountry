@@ -30,6 +30,11 @@ router.get('/resource/:id', (req, res) => {
   });
 });
 
+router.get('/resource', (req, res) => {
+  res.send("Success")
+  console.log("Success")
+});
+
 // Update
 router.put('/resource/:id', (req, res) => {
   execFile('bruno', ['docs.bruno/update.bru'], (error, stdout, stderr) => {
