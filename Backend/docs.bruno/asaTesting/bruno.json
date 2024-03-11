@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "asaTesting",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}
