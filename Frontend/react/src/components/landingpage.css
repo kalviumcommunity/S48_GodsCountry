@@ -1,14 +1,13 @@
 body {
     margin: 0;
     padding: 0;
-    align-items: center;
     background-image: url("https://media.licdn.com/dms/image/D4D12AQGHQUiVJQK2Ww/article-cover_image-shrink_600_2000/0/1687585294194?e=2147483647&v=beta&t=-udZVw7megqJtG2K_-Z9cGZC7zLmsCBIEjtzRPHn8tM");
     font-family: 'Arial', sans-serif;
     display: flex;
+    align-items: center;
     overflow: hidden;
     background: cover;
     background-size: 99%;
-
     justify-content: center;
   }
   
@@ -16,12 +15,9 @@ body {
     text-align: center;
   }
   
-  .welcome {
-    margin: 0;
+  h1 {
+    font-size:x-large;
     color: black;
-  }
-  h1{
-    color: #000;
   }
   nav {
     margin-top: 20px;
@@ -34,7 +30,10 @@ body {
     display: flex;
     justify-content: center;
   }
-
+  
+  li {
+    margin: 0 10px;
+  }
   
   .button {
     text-decoration: none;
@@ -43,9 +42,6 @@ body {
     color: #000000;
     border-radius: 5px;
     transition: background-color 0.3s ease;
-  }
-  li {
-    margin: 0 10px;
   }
   
   .button:hover {
