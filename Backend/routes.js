@@ -1,64 +1,54 @@
 const express = require('express');
 const router = express.Router();
-const { execFile } = require('child_process');
 
-// CRUD routes
 
 // Create
-router.post('/resource', (req, res) => {
-  execFile('bruno', ['docs.bruno/create.bru'], (error, stdout, stderr) => {
-    if (error) {
-      console.error('Error executing create.bru:', error);
-      res.status(500).send('Internal Server Error');
-      return;
-    }
-    console.log(stdout);
-    res.status(200).send('Resource created successfully');
-  });
+router.post('/create', async (req, res) => {
+  try {
+    await client.connect();
+    res.json({ message: 'Data created successfully' });
+  } catch (error) {
+    res.status(500).json({ error: 'Unable to create data' });
+  } finally {
+    await client.close();
+  }
 });
+
 
 // Read
-router.get('/resource/:id', (req, res) => {
-  execFile('bruno', ['docs.bruno/read.bru'], (error, stdout, stderr) => {
-    if (error) {
-      console.error('Error executing read.bru:', error);
-      res.status(500).send('Internal Server Error');
-      return;
-    }
-    console.log(stdout);
-    res.status(200).send('Resource retrieved successfully');
-  });
-});
-
-router.get('/resource', (req, res) => {
-  res.send("Success")
-  console.log("Success")
+router.get('/read', async (req, res) => {
+  try {
+    await client.connect();
+    res.json({ message: 'Data read successfully' });
+  } catch (error) {
+    res.status(500).json({ error: 'Unable to read data' });
+  } finally {
+    await client.close();
+  }
 });
 
 // Update
-router.put('/resource/:id', (req, res) => {
-  execFile('bruno', ['docs.bruno/update.bru'], (error, stdout, stderr) => {
-    if (error) {
-      console.error('Error executing update.bru:', error);
-      res.status(500).send('Internal Server Error');
-      return;
-    }
-    console.log(stdout);
-    res.status(200).send('Resource updated successfully');
-  });
+router.put('/update', async (req, res) => {
+  try {
+    await client.connect();
+    res.json({ message: 'Data updated successfully' });
+  } catch (error) {
+    res.status(500).json({ error: 'Unable to update data' });
+  } finally {
+    await client.close();
+  }
 });
 
 // Delete
-router.delete('/resource/:id', (req, res) => {
-  execFile('bruno', ['docs.bruno/delete.bru'], (error, stdout, stderr) => {
-    if (error) {
-      console.error('Error executing delete.bru:', error);
-      res.status(500).send('Internal Server Error');
-      return;
-    }
-    console.log(stdout);
-    res.status(200).send('Resource deleted successfully');
-  });
+router.delete('/delete', async (req, res) => {
+  try {
+    await client.connect();
+    res.json({ message: 'Data deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ error: 'Unable to delete data' });
+  } finally {
+    await client.close();
+  }
 });
 
 module.exports = router;
