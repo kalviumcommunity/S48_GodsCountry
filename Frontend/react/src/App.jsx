@@ -1,27 +1,34 @@
-import React from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Login from "./components/login";
+import React from 'react';
+import { BrowserRouter , Routes, Route } from 'react-router-dom';
+import Header from './components/Header';
+import Home from './components/Home';
+import Temple from './components/Temples';
+import Footer from './components/Footer';
+import CreateUser from './components/signup';
+import Log from './components/login';
 
-// import MainPage from "./component/MainPage";
- import SignUp from "./components/signup";
-// import Createuser from "./components/";
-// import UpdateUser from "./component/UpdateUser";
-import GodsCountry from "./components/LandingPage";
-// import Login from "./components/login";
+import './App.css'; 
 
-function App(){
 
+const App = () => {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<GodsCountry />} />
-         <Route path="/signup" element={<SignUp />} />
-        {/* <Route path="/create" element={<Createuser/>}/> */}
-        {/* <Route path="/update/:id" element={<UpdateUser/>}/>  */}
-        <Route path="Login" element= {<Login/>}></Route>
-      </Routes>
-    </Router>
+   
+      <div>
+        <Header />
+    
+       <Routes>
+          <Route exact path="/" component={<Home />}/>
+          <Route path="/temple" component={<Temple />} />
+          <Route path="/Home" element={<Home />} />
+          <Route path="/create" element={<CreateUser />} />
+          <Route path="/Loginpage" element={<Log />} />
+          <Route path="/create" element={<CreateUser />} />
+         
+          </Routes>
+        <Footer />
+      </div>
+ 
   );
-}
+};
 
 export default App;
