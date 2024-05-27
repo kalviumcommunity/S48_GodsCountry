@@ -7,7 +7,7 @@ function Temple() {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:3000/')
+    axios.get('http://localhost:3001/')
       .then(response => setUsers(response.data))
       .catch(err => console.log(err));
   }, []);
