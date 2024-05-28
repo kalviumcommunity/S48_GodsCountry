@@ -1,6 +1,13 @@
-.app-container {
-  background-image: url("https://media.licdn.com/dms/image/D4D12AQGHQUiVJQK2Ww/article-cover_image-shrink_600_2000/0/1687585294194?e=2147483647&v=beta&t=-udZVw7megqJtG2K_-Z9cGZC7zLmsCBIEjtzRPHn8tM");
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+/* Global Styles */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.api {
+  padding: 20px;
+}
+
+.data {
+  margin-bottom: 20px;
 }

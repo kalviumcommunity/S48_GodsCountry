@@ -1,42 +1,65 @@
-*{
-    justify-content: center;
-}
-.center-container {
+.signupform-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-  }
-  
-  .form-container {
-    display: flex; 
-    flex-direction: column; 
-    align-items: center; 
-    width: 300px;
-    padding: 20px;
+    font-family: Arial, sans-serif;
+    padding-top: 50px;
+    overflow: hidden;
+}
+
+.signupregister-form {
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    background: rgb(50, 50, 50);
+}
+
+.signupregister-form h2 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.signupregister-form label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+    font-weight: bold;
+}
+
+.signupregister-form .signupform-control {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
+    font-size: 16px;
+}
+
+.signuptext-danger {
+    color: #ff4d4f;
+    font-size: 14px;
+    margin-top: -10px;
+    margin-bottom: 10px;
+}
+
+.signupregister-form .signupform-field {
+    width: 100%;
+    padding: 10px;
+    background-color: #dfe60d;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
     text-align: center;
-    background-color: rgba(255, 255, 255, 0.801);
-  }
-  
-  .form-field {
-    width: 90%;
-    margin-bottom: 10px;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 3px;
-  }
-  
-  .success-message {
-    margin-bottom: 10px;
-    padding: 8px;
-    background-color: #d4edda;
-    color: #155724;
-    border: 1px solid #c3e6cb;
-    border-radius: 3px;
-  }
-  
-  span {
-    color: red;
-  }
+}
+
+.signupregister-form .signupform-field:hover {
+    background-color: #d1bf03;
+}
+
+.signupregister-form .mb-2 {
+    margin-bottom: 15px;
+}

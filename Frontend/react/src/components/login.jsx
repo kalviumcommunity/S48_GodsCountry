@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import Cookies from "js-cookie"; // Import the Cookies object
+import Cookies from "js-cookie";
+import './login.css';
 
-export default function Log() {
+export default function Login() {
   const [field, setField] = useState({
     email: "",
     password: "",
@@ -18,16 +19,14 @@ export default function Log() {
     setSubmit(true);
 
     try {
-      const response = await axios.post("http://localhost:3000//login", {
+      const response = await axios.post("http://localhost:3000/login", {
         email: field.email,
         password: field.password,
-        action: "login", // Add this line to specify the action
+        action: "login",
       });
 
-      // Assuming your server returns a success message on successful login
       if (response.data.message === "Login successful") {
         setValidation(true);
-        // Set the token value in a cookie
         Cookies.set("token", response.data.token, { expires: 1 });
         setError("");
         navigate("/temple");
@@ -43,43 +42,51 @@ export default function Log() {
   };
 
   return (
-    <div>
-      <div className="form-container">
-        <form className="register-form" onSubmit={handleSubmit}>
+    <div className="loginform-container">
+      <div className="loginregister-form">
+        <form onSubmit={handleSubmit}>
+          <h2>Log In</h2>
           {submitted && !validate && error && (
-            <div className="error-message">{error}</div>
+            <div className="logintext-danger">{error}</div>
           )}
 
-          <input
-            id="email"
-            className="form-field"
-            type="text"
-            placeholder="Email"
-            name="email"
-            value={field.email}
-            onChange={(e) => {
-              setField({ ...field, email: e.target.value });
-            }}
-          />
-          {submitted && !field.email && (
-            <span>Please enter your Email</span>
-          )}
+          <div className="mb-2">
+            <label htmlFor="email">Email</label>
+            <input
+              id="email"
+              className="loginform-control"
+              type="text"
+              placeholder="Email"
+              name="email"
+              value={field.email}
+              onChange={(e) => {
+                setField({ ...field, email: e.target.value });
+              }}
+            />
+            {submitted && !field.email && (
+              <div className="logintext-danger">Please enter your Email</div>
+            )}
+          </div>
 
-          <input
-            id="password"
-            className="form-field"
-            type="password"
-            placeholder="Password"
-            name="password"
-            value={field.password}
-            onChange={(e) => {
-              setField({ ...field, password: e.target.value });
-            }}
-          />
-          {submitted && !field.password && (
-            <span>Please enter your password</span>
-          )}
-          <button className="form-field" type="submit">
+          <div className="mb-2">
+            <label htmlFor="password">Password</label>
+            <input
+              id="password"
+              className="loginform-control"
+              type="password"
+              placeholder="Password"
+              name="password"
+              value={field.password}
+              onChange={(e) => {
+                setField({ ...field, password: e.target.value });
+              }}
+            />
+            {submitted && !field.password && (
+              <div className="logintext-danger">Please enter your password</div>
+            )}
+          </div>
+
+          <button className="loginform-field log-button" type="submit">
             Log In
           </button>
         </form>
