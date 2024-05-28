@@ -15,7 +15,6 @@ const App = () => {
    
       <div>
         <Header />
-    
        <Routes>
           <Route exact path="/" element={<Home />}/>
           <Route path="/temple" element={<Temple/>} />
