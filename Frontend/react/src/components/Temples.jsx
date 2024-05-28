@@ -14,7 +14,6 @@ function Temple() {
 
   return (
     <div>
-      <div id='add-temple-button'><button>Add Temples</button></div>
       <div className="temple-container">
       {temples && temples.map((temple, id) => (
         <div className="temple-card" key={id}>
