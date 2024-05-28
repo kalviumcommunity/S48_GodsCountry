@@ -3,6 +3,7 @@
     padding: 20px;
     text-align: center;
     overflow: hidden; 
+  
   }
   
   .background-image {
@@ -14,7 +15,7 @@
     background-image: url("https://media.licdn.com/dms/image/D4D12AQGHQUiVJQK2Ww/article-cover_image-shrink_600_2000/0/1687585294194?e=2147483647&v=beta&t=-udZVw7megqJtG2K_-Z9cGZC7zLmsCBIEjtzRPHn8tM");
     background-size: cover;
     background-position: center;
-    filter: brightness(0.5); 
+    filter: brightness(0.1%);
   }
   
   .content {
