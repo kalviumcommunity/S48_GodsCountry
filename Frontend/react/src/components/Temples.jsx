@@ -13,7 +13,9 @@ function Temple() {
   }, []);
 
   return (
-    <div className="temple-container">
+    <div>
+      <div id='add-temple-button'><button>Add Temples</button></div>
+      <div className="temple-container">
       {temples && temples.map((temple, id) => (
         <div className="temple-card" key={id}>
           <p><strong>Place: </strong>{temple.TempleName}</p>
@@ -23,6 +25,7 @@ function Temple() {
           <p><strong>Options to Stay: </strong>{temple.State}</p>
         </div>
       ))}
+    </div>
     </div>
   );
 }
