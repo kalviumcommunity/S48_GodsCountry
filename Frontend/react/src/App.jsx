@@ -5,6 +5,7 @@ import Home from './components/Home';
 import Temple from './components/Temples';
 import Signup from './components/signup';
 import Login from './components/login';
+import AddTempleForm from './components/Addtemples';
 
 import './App.css'; 
 
@@ -19,6 +20,7 @@ const App = () => {
           <Route path="/Home" element={<Home />} />
           <Route path="/loginpage" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/addtemple" element={<AddTempleForm />} />
         </Routes>
       </div>
  
