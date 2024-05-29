@@ -19,7 +19,7 @@ export default function Login() {
     setSubmit(true);
 
     try {
-      const response = await axios.post("http://localhost:3000/login", {
+      const response = await axios.post("http://localhost:3001/login", {
         email: field.email,
         password: field.password,
         action: "login",

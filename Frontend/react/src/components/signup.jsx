@@ -64,10 +64,10 @@ function Signup() {
         const newUser = { name, email, age, password };
         // Send the user data to the server
 
-        axios.post("http://localhost:3000//createUser", newUser)
+        axios.post("http://localhost:3001/createUser", newUser)
             .then(result => {
                 console.log(result);
-                navigate('/Loginpage');
+                navigate('/loginpage');
             })
             .catch(err => {
                 console.error(err);
