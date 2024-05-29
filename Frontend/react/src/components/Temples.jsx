@@ -14,14 +14,15 @@ function Temple() {
 
   return (
     <div>
+      <div id='add-temple-button'><a href="/addtemple"><button>Add Temples</button></a></div>
       <div className="temple-container">
       {temples && temples.map((temple, id) => (
         <div className="temple-card" key={id}>
-          <p><strong>Place: </strong>{temple.TempleName}</p>
-          <p><strong>City: </strong>{temple.Location}</p>
-          <p><strong>State: </strong>{temple.ERA}</p>
-          <p><strong>Vehicles Available: </strong>{temple.ArchietechturalStyle}</p>
-          <p><strong>Options to Stay: </strong>{temple.State}</p>
+          <p><strong>TempleName: </strong>{temple.TempleName}</p>
+          <p><strong>Location: </strong>{temple.Location}</p>
+          <p><strong>ERA: </strong>{temple.ERA}</p>
+          <p><strong>ArchietechturalStyle: </strong>{temple.ArchietechturalStyle}</p>
+          <p><strong>State: </strong>{temple.State}</p>
         </div>
       ))}
     </div>

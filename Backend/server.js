@@ -14,6 +14,7 @@ app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
 const mongodb_uri = process.env.MONGODB_URI
+app.use("/", routes);
 
 mongoose.connect(mongodb_uri)
 .then(() => console.log('Connected to MongoDB'))
@@ -102,7 +103,6 @@ app.post("/createUser", async (req, res) => {
     }
 });
 // Define routes for TempleModal
-app.use("/main", routes);
 app.get("/temples", async (req, res) => {
     try {
         const templeModels = await TempleModal.find(); // Changed variable name
@@ -111,7 +111,29 @@ app.get("/temples", async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 });
-
+app.post('/temples', async (req, res) => {
+    try {
+      const newTempleData = req.body;
+      
+      // Validate the temple data against the schema
+      const { error } = validateGodsSchema(newTempleData);
+      if (error) {
+        return res.status(400).json({ message: error.details[0].message });
+      }
+      
+      // Create a new temple instance using TempleModal
+      const newTemple = new TempleModal(newTempleData);
+  
+      // Save the new temple to the database
+      await newTemple.save();
+  
+      // Respond with success message and the new temple data
+      res.status(201).json({ message: 'Temple added successfully', temple: newTemple });
+    } catch (error) {
+      console.error('Error:', error);
+      res.status(500).json({ message: 'Internal Server Error' });
+    }
+  });
 if (require.main === module) {
     app.listen(port, () => {
       console.log(`🚀 Server running on PORT: ${port}`);
