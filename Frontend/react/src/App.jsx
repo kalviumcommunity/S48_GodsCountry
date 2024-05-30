@@ -6,24 +6,23 @@ import Temple from './components/Temples';
 import Signup from './components/signup';
 import Login from './components/login';
 import AddTempleForm from './components/Addtemples';
-
-import './App.css'; 
-
+import UpdateTempleForm from './components/UpdateTempleForm';
+import './App.css';
 
 const App = () => {
   return (
-      <div>
+    <div>
       <Header />
-        <Routes>
-          <Route exact path="/" element={<Home />}/>
-          <Route path="/temple" element={<Temple/>} />
-          <Route path="/Home" element={<Home />} />
-          <Route path="/loginpage" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/addtemple" element={<AddTempleForm />} />
-        </Routes>
-      </div>
- 
+      <Routes>
+        <Route exact path="/" element={<Home />} />
+        <Route path="/temple" element={<Temple />} />
+        <Route path="/Home" element={<Home />} />
+        <Route path="/loginpage" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/addtemple" element={<AddTempleForm />} />
+        <Route path="/temples/:id" element={<UpdateTempleForm />} /> 
+      </Routes>
+    </div>
   );
 };
 

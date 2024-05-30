@@ -24,28 +24,18 @@ router.get('/getusers/:id', async (req, res) => {
     }
 });
 
-router.put('/updateUsers/:id', async (req, res) => {
-    const id = req.params.id;
-    try {
-        const updatedUser = await UserModal.findByIdAndUpdate(
-            id,
-            { name: req.body.name, email: req.body.email, age: req.body.age, password: req.body.password },
-            { new: true }
-        );
-        res.json(updatedUser);
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
-});
-
-router.delete('/deleteUsers/:id', async (req, res) => {
-    const userId = req.params.id;
-    try {
-        const deletedUser = await UserModal.findByIdAndDelete(userId);
-        res.json(deletedUser);
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
+// Create user route
+router.post("/createUser", async (req, res) => {
+  try {
+      const { error } = userValidationSchema.validate(req.body);
+      if (error) {
+          return res.status(400).json({ error: error.details[0].message });
+      }
+      const newUser = await UserModal.create(req.body);
+      res.json(newUser);
+  } catch (err) {
+      res.status(500).json({ error: err.message });
+  }
 });
 
 // Login route
@@ -64,19 +54,7 @@ router.post("/login", async (req, res) => {
     }
 });
 
-// Create user route
-router.post("/createUser", async (req, res) => {
-    try {
-        const { error } = userValidationSchema.validate(req.body);
-        if (error) {
-            return res.status(400).json({ error: error.details[0].message });
-        }
-        const newUser = await UserModal.create(req.body);
-        res.json(newUser);
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
-});
+
 
 // Routes for TempleModal
 router.get("/temples", async (req, res) => {
@@ -102,6 +80,40 @@ router.post('/temples', async (req, res) => {
         console.error('Error:', error);
         res.status(500).json({ message: 'Internal Server Error' });
     }
+});
+
+
+
+router.put('/temples/:id', async (req, res) => {
+  const id = req.params.id;
+  try {
+      const updateData = req.body;
+      const { error } = validateGodsSchema(updateData);
+      if (error) {
+          return res.status(400).json({ message: error.details[0].message });
+      }
+      const updatedTemple = await TempleModal.findByIdAndUpdate(id, updateData, { new: true });
+      if (!updatedTemple) {
+          return res.status(404).json({ message: 'Temple not found' });
+      }
+      res.json({ message: 'Temple updated successfully', temple: updatedTemple });
+  } catch (err) {
+      res.status(500).json({ error: err.message });
+  }
+});
+
+// Delete a temple
+router.delete('/temples/:id', async (req, res) => {
+  const templeId = req.params.id;
+  try {
+      const deletedTemple = await TempleModal.findByIdAndDelete(templeId);
+      if (!deletedTemple) {
+          return res.status(404).json({ message: 'Temple not found' });
+      }
+      res.json({ message: 'Temple deleted successfully', temple: deletedTemple });
+  } catch (err) {
+      res.status(500).json({ error: err.message });
+  }
 });
 
 module.exports = router;
