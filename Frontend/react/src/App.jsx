@@ -8,6 +8,8 @@ import Login from './components/login';
 import AddTempleForm from './components/Addtemples';
 import UpdateTempleForm from './components/UpdateTempleForm';
 import Userdata from './components/Userdata';
+import UpdateUser from './components/updateuserdata';
+
 import './App.css';
 
 const App = () => {
@@ -23,6 +25,8 @@ const App = () => {
         <Route path="/addtemple" element={<AddTempleForm />} />
         <Route path="/temples/:id" element={<UpdateTempleForm />} /> 
         <Route path="/userdata" element={<Userdata />} /> 
+        <Route path="/update/:id" element={<UpdateUser />} />
+
 
       </Routes>
     </div>

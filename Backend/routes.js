@@ -53,7 +53,26 @@ router.post("/login", async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 });
+router.put('/:id', async (req, res) => {
+  const id = req.params.id;
+  try {
+      const updatedUser = await UserModel.findByIdAndUpdate(id, req.body, { new: true });
+      res.json(updatedUser);
+  } catch (err) {
+      res.status(500).json({ error: err.message });
+  }
+});
 
+// Delete user
+router.delete('/:id', async (req, res) => {
+  const userId = req.params.id;
+  try {
+      const deletedUser = await UserModel.findByIdAndDelete(userId);
+      res.json(deletedUser);
+  } catch (err) {
+      res.status(500).json({ error: err.message });
+  }
+});
 
 
 // Fetch all temples
