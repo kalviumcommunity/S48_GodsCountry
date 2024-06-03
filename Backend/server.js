@@ -1,40 +1,33 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const cookieParser = require('cookie-parser');
-const routes = require('./routes.js');
-const port = 3001;
-require('dotenv').config();
+const TempleModel = require('./Model/temple');
+const routes = require('./routes');
 
 const app = express();
+const PORT = 3001;
 
+// Middleware
 app.use(cors());
 app.use(express.json());
-app.use(cookieParser());
 
-const mongodb_uri = process.env.MONGODB_URI;
+// Connect to MongoDB
+mongoose.connect("mongodb+srv://Prashanth:Prash%402005@cluster0.o3hncd3.mongodb.net/Godsowncountry");
 
-mongoose.connect(mongodb_uri)
-    .then(() => console.log('Connected to MongoDB'))
-    .catch(err => console.error('Error connecting to MongoDB:', err));
+// Routes
+app.use('/', routes);
 
-app.use("/", routes);
-
-app.get('/mongoConnection', async (req, res) => {
-    try {
-        if (mongoose.connection.readyState === 1) {
-            res.json("Connected to database");
-        }
-    } catch (err) {
-        res.json("Unable to connect to the database");
-        console.error({ message: "Error connecting to the database" }, err);
-    }
+// Additional route
+app.get('/temples', (req, res) => {
+    TempleModel.find()
+    .then(temples => res.json(temples))
+    .catch(err => console.log(err));
 });
 
-if (require.main === module) {
-    app.listen(port, () => {
-        console.log(`🚀 Server running on PORT: ${port}`);
-    });
-}
+// Default 404 route
+// app.use((req, res) => res.status(404).send('Not found'));
 
-module.exports = app;
+// Start server
+app.listen(PORT, () => {
+  console.log(`🚀Server is running on port ${PORT}`);
+});
