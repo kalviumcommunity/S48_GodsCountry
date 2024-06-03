@@ -1,7 +1,9 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const { UserModal, userValidationSchema } = require('./Model/user');  // Correctly import UserModel and validation schema
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
+const { UserModel, userValidationSchema } = require('./Model/user'); // Correct import
 const TempleModel = require('./Model/temple');
 const routes = require('./routes');
 require('dotenv').config();
@@ -24,7 +26,7 @@ app.use('/', routes);
 // Additional route to get all users
 app.get('/getusers', async (req, res) => {
     try {
-        const users = await UserModal.find({});
+        const users = await UserModel.find({});
         res.json(users);
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -35,7 +37,7 @@ app.get('/getusers', async (req, res) => {
 app.get('/getusers/:id', async (req, res) => {
     const id = req.params.id;
     try {
-        const user = await UserModal.findById(id);
+        const user = await UserModel.findById(id);
         if (!user) {
             return res.status(404).json({ error: "User not found" });
         }
@@ -49,7 +51,7 @@ app.get('/getusers/:id', async (req, res) => {
 app.delete('/deleteUsers/:id', async (req, res) => {
     const userId = req.params.id;
     try {
-        const deletedUser = await UserModal.findByIdAndDelete(userId);
+        const deletedUser = await UserModel.findByIdAndDelete(userId);
         if (!deletedUser) {
             console.error(`User with ID ${userId} not found`);
             return res.status(404).json({ error: "User not found" });
@@ -65,13 +67,37 @@ app.delete('/deleteUsers/:id', async (req, res) => {
 app.put('/updateUsers/:id', async (req, res) => {
     const id = req.params.id;
     try {
-        const updatedUser = await UserModal.findByIdAndUpdate(id, req.body, { new: true });
+        const updatedUser = await UserModel.findByIdAndUpdate(id, req.body, { new: true });
         if (!updatedUser) {
             return res.status(404).json({ error: "User not found" });
         }
         res.json(updatedUser);
     } catch (err) {
         res.status(500).json({ error: err.message });
+    }
+});
+
+app.post('/login', async (req, res) => {
+    try {
+        // Validate request body using Joi
+        const { error, value } = userValidationSchema.validate(req.body);
+        if (error) {
+            return res.status(400).json({ error: error.details[0].message });
+        }
+
+        const { username, password } = value;
+        const user = await UserModel.findOne({ username });
+
+        if (!user || !(await bcrypt.compare(password, user.password))) {
+            return res.status(401).json({ success: false, message: "Invalid username or password" });
+        }
+
+        const accessToken = jwt.sign({ username }, process.env.ACCESSTOKEN_SECRET);
+
+        res.json({ success: true, message: "Login successful", accessToken });
+    } catch (error) {
+        console.error("Error during login:", error);
+        res.status(500).json({ success: false, message: "An error occurred during login" });
     }
 });
 
@@ -83,7 +109,8 @@ app.post('/createUser', async (req, res) => {
             return res.status(400).json({ error: error.details[0].message });
         }
 
-        const newUser = await UserModal.create(req.body);
+        const hashedPassword = await bcrypt.hash(req.body.password, 10);
+        const newUser = await UserModel.create({ ...req.body, password: hashedPassword });
         res.json(newUser);
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -108,5 +135,5 @@ app.use((err, req, res, next) => {
 
 // Start server
 app.listen(PORT, () => {
-  console.log(`🚀Server is running on port ${PORT}`);
+    console.log(`🚀Server is running on port ${PORT}`);
 });
