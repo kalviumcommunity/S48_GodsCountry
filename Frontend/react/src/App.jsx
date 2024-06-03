@@ -7,6 +7,7 @@ import Signup from './components/signup';
 import Login from './components/login';
 import AddTempleForm from './components/Addtemples';
 import UpdateTempleForm from './components/UpdateTempleForm';
+import Userdata from './components/Userdata';
 import './App.css';
 
 const App = () => {
@@ -21,6 +22,8 @@ const App = () => {
         <Route path="/signup" element={<Signup />} />
         <Route path="/addtemple" element={<AddTempleForm />} />
         <Route path="/temples/:id" element={<UpdateTempleForm />} /> 
+        <Route path="/userdata" element={<Userdata />} /> 
+
       </Routes>
     </div>
   );

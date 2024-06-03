@@ -13,6 +13,8 @@ const Header = () => {
               <li><a href="/temple">Temples</a></li>
               <li><a href="/loginpage">Login</a></li>
               <li><a href="/signup">Sign Up</a></li> 
+              <li><a href="/userdata">UserData</a></li> 
+
             </ul>
           </nav>
         </div>
