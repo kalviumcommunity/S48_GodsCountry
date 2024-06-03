@@ -7,6 +7,7 @@ const { UserModel, userValidationSchema } = require('./Model/user'); // Correct 
 const TempleModel = require('./Model/temple');
 const routes = require('./routes');
 require('dotenv').config();
+const jwt = require('jsonwebtoken')
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -79,27 +80,28 @@ app.put('/updateUsers/:id', async (req, res) => {
 
 app.post('/login', async (req, res) => {
     try {
-        // Validate request body using Joi
-        const { error, value } = userValidationSchema.validate(req.body);
-        if (error) {
-            return res.status(400).json({ error: error.details[0].message });
-        }
-
-        const { username, password } = value;
-        const user = await UserModel.findOne({ username });
-
-        if (!user || !(await bcrypt.compare(password, user.password))) {
-            return res.status(401).json({ success: false, message: "Invalid username or password" });
-        }
-
-        const accessToken = jwt.sign({ username }, process.env.ACCESSTOKEN_SECRET);
-
-        res.json({ success: true, message: "Login successful", accessToken });
+      // Validate request body using Joi
+      const { error, value } = UserValidation.validate(req.body);
+      if (error) {
+        return res.status(400).send(error.details[0].message);
+      }
+  
+      // Check if the user exists
+      const { username , email, password } = value;
+      const user = await UserModel.findOne({ username });
+  
+      const accessToken = jwt.sign({username},process.env.ACCESSTOKEN_SECRET)
+  
+      if (!user || user.password !== password) {
+        return res.status(401).json({ success: false, message: "Invalid username or password" });
+      }
+  
+      res.json({ success: true, message: "Login successful",accessToken:accessToken });
     } catch (error) {
-        console.error("Error during login:", error);
-        res.status(500).json({ success: false, message: "An error occurred during login" });
+      console.error("Error during login:", error);
+      res.status(500).json({ success: false, message: "An error occurred during login" });
     }
-});
+  });
 
 // Route to create a new user
 app.post('/createUser', async (req, res) => {
