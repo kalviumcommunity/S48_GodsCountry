@@ -14,6 +14,7 @@ const userValidationSchema = Joi.object({
     age: Joi.number().integer().min(0),
     password: Joi.string().required()
 });
+
 const UserModal = mongoose.model("users", UserSchema);
-module.exports = {UserModal,
-    userValidationSchema};
+
+module.exports = { UserModal, userValidationSchema };
