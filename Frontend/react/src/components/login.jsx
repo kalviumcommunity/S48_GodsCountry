@@ -1,96 +1,85 @@
 import React, { useState } from "react";
-import axios from "axios";
+import "./login.css";
 import { useNavigate } from "react-router-dom";
-import Cookies from "js-cookie";
-import './login.css';
+import axios from "axios";
 
-export default function Login() {
+function Login() {
+  const navigate = useNavigate();
   const [field, setField] = useState({
-    email: "",
-    password: "",
+    userName: "",
+    password: ""
   });
+
   const [submitted, setSubmit] = useState(false);
   const [validate, setValidation] = useState(false);
   const [error, setError] = useState("");
-  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setSubmit(true);
+
+    if (!field.userName || !field.password) {
+      setSubmit(true);
+      return;
+    }
 
     try {
       const response = await axios.post("http://localhost:3001/login", {
-        email: field.email,
-        password: field.password,
-        action: "login",
+        username: field.userName,
+        password: field.password
       });
 
-      if (response.data.message === "Login successful") {
+      if (response.status === 200) {
         setValidation(true);
-        Cookies.set("token", response.data.token, { expires: 1 });
-        setError("");
-        navigate("/temple");
-      } else {
-        setValidation(false);
-        setError("Invalid credentials");
+        setSubmit(true);
+        document.cookie = `username=${field.userName}; path=/`;
+        navigate("/Home"); // Redirect to home page on successful login
       }
-    } catch (err) {
-      setValidation(false);
-      setError("Email or Password is invalid");
-      console.error(err);
+    } catch (error) {
+      if (error.response && error.response.status === 400) {
+        alert(error.response.data);
+      } else {
+        alert("Login Suseccfull");
+      }
+      setError(error.response ? error.response.data.message : "An error occurred during login");
     }
   };
 
   return (
-    <div className="loginform-container">
-      <div className="loginregister-form">
-        <form onSubmit={handleSubmit}>
-          <h2>Log In</h2>
-          {submitted && !validate && error && (
-            <div className="logintext-danger">{error}</div>
-          )}
+    <div className="center-container">
+      <div className="form-container">
+        <form className="login-form" onSubmit={handleSubmit}>
+          {submitted && validate && <div className="success-message">Login successful!</div>}
+          {error && <div className="error-message">{error}</div>}
 
-          <div className="mb-2">
-            <label htmlFor="email">Email</label>
-            <input
-              id="email"
-              className="loginform-control"
-              type="text"
-              placeholder="Email"
-              name="email"
-              value={field.email}
-              onChange={(e) => {
-                setField({ ...field, email: e.target.value });
-              }}
-            />
-            {submitted && !field.email && (
-              <div className="logintext-danger">Please enter your Email</div>
-            )}
-          </div>
+          <input
+            id="username"
+            className="form-field"
+            type="text"
+            placeholder="Username"
+            name="username"
+            value={field.userName}
+            onChange={(e) => setField({ ...field, userName: e.target.value })}
+          />
+          {submitted && !field.userName && <span>Please enter your username</span>}
 
-          <div className="mb-2">
-            <label htmlFor="password">Password</label>
-            <input
-              id="password"
-              className="loginform-control"
-              type="password"
-              placeholder="Password"
-              name="password"
-              value={field.password}
-              onChange={(e) => {
-                setField({ ...field, password: e.target.value });
-              }}
-            />
-            {submitted && !field.password && (
-              <div className="logintext-danger">Please enter your password</div>
-            )}
-          </div>
+          <input
+            id="password"
+            className="form-field"
+            type="password"
+            placeholder="Password"
+            name="password"
+            value={field.password}
+            onChange={(e) => setField({ ...field, password: e.target.value })}
+          />
+          {submitted && !field.password && <span>Please enter your password</span>}
 
-          <button className="loginform-field log-button" type="submit">
-            Log In
+          <button className="form-field" type="submit">
+            Submit
           </button>
         </form>
       </div>
     </div>
   );
 }
+
+export default Login;
