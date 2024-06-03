@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { UserModal, userValidationSchema } = require('./Model/user.js');
-const { TempleModal, validateGodsSchema } = require('./Model/temple.js');
+const { TempleModel, validateGodsSchema } = require('./Model/temple.js');
 const jwt = require('jsonwebtoken');
 
 // Routes for UserModal
@@ -56,64 +56,15 @@ router.post("/login", async (req, res) => {
 
 
 
-// Routes for TempleModal
-router.get("/temples", async (req, res) => {
-    try {
-        const templeModels = await TempleModal.find();
-        res.json(templeModels);
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
-});
-
-router.post('/temples', async (req, res) => {
-    try {
-        const newTempleData = req.body;
-        const { error } = validateGodsSchema(newTempleData);
-        if (error) {
-            return res.status(400).json({ message: error.details[0].message });
-        }
-        const newTemple = new TempleModal(newTempleData);
-        await newTemple.save();
-        res.status(201).json({ message: 'Temple added successfully', temple: newTemple });
-    } catch (error) {
-        console.error('Error:', error);
-        res.status(500).json({ message: 'Internal Server Error' });
-    }
-});
-
-
-
-router.put('/temples/:id', async (req, res) => {
-  const id = req.params.id;
+// Fetch all temples
+router.get('/temples', async (req, res) => {
   try {
-      const updateData = req.body;
-      const { error } = validateGodsSchema(updateData);
-      if (error) {
-          return res.status(400).json({ message: error.details[0].message });
-      }
-      const updatedTemple = await TempleModal.findByIdAndUpdate(id, updateData, { new: true });
-      if (!updatedTemple) {
-          return res.status(404).json({ message: 'Temple not found' });
-      }
-      res.json({ message: 'Temple updated successfully', temple: updatedTemple });
-  } catch (err) {
-      res.status(500).json({ error: err.message });
+      const temples = await TempleModel.find();
+      res.json(temples);
+  } catch (error) {
+      res.status(500).json({ error: error.message });
   }
 });
 
-// Delete a temple
-router.delete('/temples/:id', async (req, res) => {
-  const templeId = req.params.id;
-  try {
-      const deletedTemple = await TempleModal.findByIdAndDelete(templeId);
-      if (!deletedTemple) {
-          return res.status(404).json({ message: 'Temple not found' });
-      }
-      res.json({ message: 'Temple deleted successfully', temple: deletedTemple });
-  } catch (err) {
-      res.status(500).json({ error: err.message });
-  }
-});
 
 module.exports = router;

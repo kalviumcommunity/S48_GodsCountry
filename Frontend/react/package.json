@@ -10,8 +10,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@vitejs/plugin-react": "^4.3.0",
     "axios": "^1.6.7",
     "bootstrap": "^5.3.3",
+    "cors": "^2.8.5",
     "joi": "^17.12.2",
     "js-cookie": "^3.0.5",
     "jwt-decode": "^4.0.0",
